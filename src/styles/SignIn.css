@@ -1,35 +1,49 @@
-/* Authentication Pages (SignIn & SignUp) */
-form {
+/* Sign In Page Styles */
+.auth-form-container {
     max-width: 400px;
     margin: 50px auto;
-    background-color: #fff;
     padding: 20px;
+    background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
   }
   
-  form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  form button {
-    background-color: #5c6bc0;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  form button:hover {
-    background-color: #3949ab;
-  }
-  
-  h2 {
+  .auth-form-container h2 {
     text-align: center;
+    color: var(--primary-color);
     margin-bottom: 20px;
   }
   
+  .auth-form-container .error {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  .auth-form-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-form-container input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .auth-form-container button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-form-container button:hover {
+    background-color: #2980b9; /* Darker shade for hover effect */
+  }

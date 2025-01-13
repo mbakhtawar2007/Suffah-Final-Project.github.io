@@ -1,30 +1,92 @@
 /* Checkout Page */
+.checkout {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.checkout h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+.checkout-steps {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.checkout-steps span {
+  font-size: 1rem;
+  color: #555;
+}
+
 form {
-    max-width: 500px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 15px;
+}
+
+form label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #5c6bc0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+form button:hover {
+  background-color: #3949ab;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .checkout {
+    padding: 15px;
   }
-  
-  form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+
+  .checkout h2 {
+    font-size: 1.5rem;
   }
-  
+
+  .checkout-steps span {
+    font-size: 0.9rem;
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  form input, form select {
+    padding: 8px;
+  }
+
   form button {
-    background-color: #5c6bc0;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 8px 16px;
   }
-  
-  form button:hover {
-    background-color: #3949ab;
-  }
-  
+}

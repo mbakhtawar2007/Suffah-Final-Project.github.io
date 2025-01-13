@@ -10,26 +10,34 @@ function OrderHistory() {
   return (
     <div className="order-history">
       <h2>Your Orders</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.date}</td>
-              <td>{order.total}</td>
-              <td>{order.status}</td>
+      {orders.length === 0 ? (
+        <p>You have no orders yet.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{order.date}</td>
+                <td>{order.total}</td>
+                <td>{order.status}</td>
+                <td>
+                  <button className="view-details">View Details</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

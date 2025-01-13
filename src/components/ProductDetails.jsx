@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import '../styles/ProductDetails.css';
 
 function ProductDetails() {
@@ -6,37 +7,41 @@ function ProductDetails() {
     { id: 1, name: 'Alice', rating: 5, comment: 'Amazing product!' },
     { id: 2, name: 'Bob', rating: 4, comment: 'Great quality but a bit expensive.' },
   ]);
-
   const [newReview, setNewReview] = useState({ name: '', rating: '', comment: '' });
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
-    setReviews([...reviews, { id: Date.now(), ...newReview }]);
-    setNewReview({ name: '', rating: '', comment: '' });
+    if (newReview.name && newReview.rating && newReview.comment) {
+      setReviews([...reviews, { id: Date.now(), ...newReview }]);
+      setNewReview({ name: '', rating: '', comment: '' });
+    }
   };
 
   return (
     <div className="product-details">
       <h1>Product Name</h1>
-      <div className="product-carousel">
-        <img src="/assets/images/product1.jpg" alt="Product" />
-        <img src="/assets/images/product2.jpg" alt="Product" />
+      <div className="product-carousel" aria-label="Product Images">
+        <img src="/assets/images/product1.jpg" alt="Product 1" />
+        <img src="/assets/images/product2.jpg" alt="Product 2" />
       </div>
       <p>Description of the product goes here.</p>
-      <button>Add to Cart</button>
+      <div className="price">$699</div>
+      <button className="add-to-cart-btn">Add to Cart</button>
 
-      <div className="reviews">
+      <div className="reviews-section">
         <h2>Customer Reviews</h2>
-        {reviews.map((review) => (
-          <div key={review.id} className="review">
-            <strong>{review.name}</strong>
-            <span>{'⭐'.repeat(review.rating)}</span>
-            <p>{review.comment}</p>
-          </div>
-        ))}
+        <ul className="reviews-list">
+          {reviews.map((review) => (
+            <li key={review.id} className="review">
+              <div className="review-header">
+                <strong>{review.name}</strong> - {review.rating} stars
+              </div>
+              <p>{review.comment}</p>
+            </li>
+          ))}
+        </ul>
 
-        <h3>Write a Review</h3>
-        <form onSubmit={handleReviewSubmit}>
+        <form onSubmit={handleReviewSubmit} aria-label="Submit a review">
           <input
             type="text"
             placeholder="Your Name"
@@ -44,29 +49,37 @@ function ProductDetails() {
             onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
             required
           />
-          <select
+          <input
+            type="number"
+            placeholder="Rating (1-5)"
             value={newReview.rating}
             onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
+            min="1"
+            max="5"
             required
-          >
-            <option value="">Rating</option>
-            <option value="1">1 - Poor</option>
-            <option value="2">2 - Fair</option>
-            <option value="3">3 - Good</option>
-            <option value="4">4 - Very Good</option>
-            <option value="5">5 - Excellent</option>
-          </select>
+          />
           <textarea
-            placeholder="Your Comment"
+            placeholder="Your Review"
             value={newReview.comment}
             onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
             required
-          ></textarea>
-          <button type="submit">Submit Review</button>
+          />
+          <button type="submit" className="submit-review-btn">Submit Review</button>
         </form>
       </div>
     </div>
   );
 }
+
+ProductDetails.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+      comment: PropTypes.string.isRequired,
+    })
+  ),
+};
 
 export default ProductDetails;

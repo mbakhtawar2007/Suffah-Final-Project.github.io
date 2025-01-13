@@ -1,8 +1,18 @@
 /* Updated Global Styles */
+
+/* Define color variables */
+:root {
+  --primary-bg-color: #f4f4f9;
+  --primary-text-color: #444;
+  --button-bg-color: #3949ab;
+  --button-hover-bg-color: #303f9f;
+  --focus-border-color: #5c6bc0;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f4f4f9;
-  color: #444;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
   margin: 0;
   padding: 0;
 }
@@ -17,7 +27,7 @@ button {
 }
 
 button:hover {
-  background-color: #3949ab;
+  background-color: var(--button-bg-color);
   color: #fff;
   transform: translateY(-2px);
 }
@@ -33,7 +43,7 @@ input, select {
 }
 
 input:focus, select:focus {
-  border-color: #5c6bc0;
+  border-color: var(--focus-border-color);
   box-shadow: 0 0 5px rgba(92, 107, 192, 0.5);
 }
 

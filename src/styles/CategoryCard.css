@@ -1,0 +1,20 @@
+/* Category Card Styles */
+.category-card {
+  text-align: center;
+  background-color: var(--card-bg-color, #fff); /* Use CSS variable */
+  padding: 20px;
+  border: 1px solid var(--border-color, #ddd); /* Use CSS variable */
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Add CSS variables at the top */
+:root {
+  --card-bg-color: #fff;
+  --border-color: #ddd;
+}

@@ -12,48 +12,52 @@ import SignUp from './components/SignUp';
 import OrderHistory from './components/OrderHistory';
 
 import { AuthProvider, ProtectedRoute } from './context/AuthContext';
+import { CartProvider } from './context/CartContext'; 
+
 import './styles/global.css';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Navbar />
-        <div className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<ProductListing />} />
-            <Route path="/products/:id" element={<ProductDetails />} />
-            <Route
-              path="/cart"
-              element={
-                <ProtectedRoute>
-                  <Cart />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <ProtectedRoute>
-                  <Checkout />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/order-history"
-              element={
-                <ProtectedRoute>
-                  <OrderHistory />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Routes>
-        </div>
-        <Footer />
-      </Router>
+      <CartProvider>
+        <Router>
+          <Navbar />
+          <div className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<ProductListing />} />
+              <Route path="/products/:id" element={<ProductDetails />} />
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <Cart />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order-history"
+                element={
+                  <ProtectedRoute>
+                    <OrderHistory />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 }
