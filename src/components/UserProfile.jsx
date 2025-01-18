@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/UserProfile.css';
+import EditProfileModal from './EditProfileModal';
 
 function UserProfile({ user }) {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleSave = (updatedUser) => {
+    // Logic to save the updated user details
+    console.log('Updated User:', updatedUser);
+  };
+
   return (
     <div className="user-profile" aria-label={`Profile of ${user.name}`} role="region">
       <img
@@ -12,7 +20,14 @@ function UserProfile({ user }) {
       />
       <h2>{user.name}</h2>
       <p>{user.email}</p>
-      <button aria-label="Edit Profile">Edit Profile</button>
+      <button aria-label="Edit Profile" onClick={() => setModalOpen(true)}>Edit Profile</button>
+      {isModalOpen && (
+        <EditProfileModal
+          user={user}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 }

@@ -4,7 +4,9 @@ import '../styles/CategoryCard.css';
 
 function CategoryCard({ title, description }) {
   return (
-    <div className="category-card">
+    <div className="category-card" 
+         onMouseEnter={() => console.log('Hovered!')} 
+         onMouseLeave={() => console.log('Unhovered!')}>
       <h3>{title}</h3>
       <p>{description}</p>
     </div>

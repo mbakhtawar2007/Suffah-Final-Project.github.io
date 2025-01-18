@@ -6,13 +6,14 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Holds authentication info.
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   // Load token from localStorage on initial load
   useEffect(() => {
     try {
       const token = localStorage.getItem('authToken');
       if (token) {
-        // Optionally, decode token to extract user info (JWT decoding can be done here)
         setUser({ token }); // Set user info if token is available
       }
     } catch (error) {
@@ -22,48 +23,54 @@ export function AuthProvider({ children }) {
 
   // Handle login with JWT token
   const login = async (email, password) => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await axios.post('/api/login', { email, password }); // Update with actual backend URL
-      const { token } = response.data; // Assume backend sends the token
+      const response = await axios.post('/api/login', { email, password });
+      const { token } = response.data;
 
-      localStorage.setItem('authToken', token); // Store token securely
-      setUser({ token }); // Store the token in state (you can also decode it to extract user data if needed)
-
+      localStorage.setItem('authToken', token);
+      setUser({ token });
     } catch (error) {
       console.error('Failed to log in:', error);
-      throw new Error('Invalid credentials');
+      setError('Invalid credentials');
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle registration with JWT token
   const register = async (email, password) => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await axios.post('/api/register', { email, password }); // Update with actual backend URL
-      const { token } = response.data; // Assume backend sends the token
+      const response = await axios.post('/api/register', { email, password });
+      const { token } = response.data;
 
-      localStorage.setItem('authToken', token); // Store token securely
-      setUser({ token }); // Store the token in state (you can also decode it to extract user data if needed)
-
+      localStorage.setItem('authToken', token);
+      setUser({ token });
     } catch (error) {
       console.error('Failed to register:', error);
-      throw new Error('Registration failed');
+      setError('Registration failed');
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle logout
   const logout = () => {
     try {
-      setUser(null); // Clear user info
-      localStorage.removeItem('authToken'); // Clear the token from storage
+      setUser(null);
+      localStorage.removeItem('authToken');
     } catch (error) {
       console.error('Failed to log out:', error);
     }
   };
 
-  const isAuthenticated = !!user?.token; // Check if token exists
+  const isAuthenticated = !!user?.token;
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated, loading, error }}>
       {children}
     </AuthContext.Provider>
   );
