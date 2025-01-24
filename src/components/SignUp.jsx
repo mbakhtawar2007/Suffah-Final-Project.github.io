@@ -11,32 +11,40 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    // Validate email format
+  // Validate input fields
+  const validateInputs = () => {
     if (!/\S+@\S+\.\S+/.test(userData.email)) {
       setError('Please enter a valid email address.');
-      setLoading(false);
-      return;
+      return false;
     }
 
-    // Validate password length
     if (userData.password.length < 6) {
       setError('Password must be at least 6 characters long.');
+      return false;
+    }
+
+    return true;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    // Validate inputs before proceeding
+    if (!validateInputs()) {
       setLoading(false);
       return;
     }
 
     try {
-      // Call register function from AuthContext, which will handle API call
       await register(userData.email, userData.password);
       navigate('/signin'); // Redirect to sign-in after successful registration
     } catch (err) {

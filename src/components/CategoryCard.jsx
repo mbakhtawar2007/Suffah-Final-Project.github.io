@@ -4,10 +4,12 @@ import '../styles/CategoryCard.css';
 
 function CategoryCard({ title, description }) {
   return (
-    <div className="category-card" 
-         onMouseEnter={() => console.log('Hovered!')} 
-         onMouseLeave={() => console.log('Unhovered!')}>
-      <h3>{title}</h3>
+    <div 
+      className="category-card" 
+      role="article" 
+      aria-labelledby={`category-${title.replace(/\s+/g, '-').toLowerCase()}`}
+    >
+      <h3 id={`category-${title.replace(/\s+/g, '-').toLowerCase()}`}>{title}</h3>
       <p>{description}</p>
     </div>
   );

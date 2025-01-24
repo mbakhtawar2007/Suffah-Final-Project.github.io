@@ -17,12 +17,12 @@
 
 /* Navbar Styles */
 .navbar {
-  background-color: var(--primary-color); /* Dark Blue-Grey */
-  color: var(--text-light-color); /* White */
+  background-color: var(--primary-color);
+  color: var(--text-light-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 15px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -31,28 +31,22 @@
 }
 
 .navbar .logo {
-  flex-shrink: 0; /* Prevents the logo from shrinking */
-  margin-right: 40px; /* Space between logo and tabs */
+  flex-shrink: 0;
+  margin-right: 40px;
 }
 
 .navbar .logo a {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-light-color);
   text-decoration: none;
-}
-
-.nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-grow: 1;
+  font-family: 'Roboto', sans-serif; /* Modern font for logo */
 }
 
 .navbar .nav-links {
   display: flex;
   align-items: center;
-  gap: 20px; /* Space between nav items */
+  gap: 20px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -63,32 +57,34 @@
 }
 
 .navbar .nav-links a {
-  font-size: 1rem;
-  padding: 8px 12px;
+  font-size: 1.1rem;
+  padding: 10px 15px;
   border-radius: 4px;
   color: var(--text-light-color);
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'Open Sans', sans-serif; /* New font family for nav links */
 }
 
 .navbar .nav-links a.active-link {
-  background-color: var(--secondary-color); /* Highlight for active links */
+  background-color: var(--secondary-color);
 }
 
 .navbar .nav-links a:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Slightly darker white */
+  background-color: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
 }
 
 .navbar .signout-btn {
-  font-size: 1rem;
-  padding: 8px 12px;
+  font-size: 1.1rem;
+  padding: 10px 15px;
   background-color: var(--primary-color);
   color: var(--text-light-color);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .navbar .signout-btn:hover {
@@ -98,9 +94,10 @@
 
 .navbar .welcome {
   font-size: 1rem;
-  margin-left: 20px; /* Space between tabs and welcome message */
+  margin-left: 20px;
   color: var(--text-light-color);
   font-style: italic;
+  font-family: 'Roboto', sans-serif; /* Consistent font for welcome message */
 }
 
 /* Focus Styles for Accessibility */

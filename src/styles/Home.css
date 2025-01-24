@@ -7,7 +7,10 @@
   --text-light-color: #FFFFFF; /* White */
   --bg-light-color: #BDC3C7; /* Light Grey-Blue */
   --bg-dark-color: #95A5A6; /* Light Grey */
-  --font-family: 'Arial', sans-serif;
+  --font-family: 'Poppins', sans-serif; /* Changed to Poppins for a modern look */
+  --heading-font-weight: 700; /* Bold font weight for headings */
+  --body-font-weight: 400; /* Regular weight for body text */
+  --button-font-weight: 600; /* Semi-bold for buttons */
 }
 
 /* Global Styles */
@@ -26,9 +29,15 @@ a {
 
 .section-heading {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.5rem; /* Slightly larger for emphasis */
   margin-bottom: 20px;
+  font-weight: var(--heading-font-weight);
   color: var(--primary-color);
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: var(--heading-font-weight);
 }
 
 /* Accessibility Utility Class */
@@ -52,9 +61,9 @@ a {
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 3rem; /* Increased size for impact */
   margin-bottom: 20px;
-  font-weight: bold;
+  font-weight: var(--heading-font-weight);
 }
 
 .hero p {
@@ -74,7 +83,7 @@ a {
   color: var(--text-light-color);
   padding: 12px 25px;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: var(--button-font-weight);
   text-transform: uppercase;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
@@ -150,6 +159,7 @@ a {
   border-top: 2px solid var(--primary-color);
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .category-cards {
     flex-direction: column;

@@ -1,6 +1,7 @@
 /* Product Listing Page */
 .product-listing {
   padding: 20px;
+  background-color: #f4f4f4; /* Light grey background for the whole page */
 }
 
 /* Sub Navbar */
@@ -60,6 +61,7 @@
   gap: 20px;
 }
 
+/* Product Cards */
 .product-card {
   background-color: #ffffff;
   padding: 15px;

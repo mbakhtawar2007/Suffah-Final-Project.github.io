@@ -13,30 +13,36 @@ function EditProfileModal({ user, onClose, onSave }) {
   };
 
   return (
-    <div className="modal">
+    <div className="modal" role="dialog" aria-labelledby="edit-profile-modal" aria-hidden="false">
       <div className="modal-content">
-        <h2>Edit Profile</h2>
+        <h2 id="edit-profile-modal">Edit Profile</h2>
         <form onSubmit={handleSubmit}>
-          <label>
-            Name:
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
             <input
               type="text"
+              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              aria-label="Your name"
             />
-          </label>
-          <label>
-            Email:
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-label="Your email"
             />
-          </label>
-          <button type="submit">Save</button>
-          <button type="button" onClick={onClose}>Cancel</button>
+          </div>
+          <div className="modal-actions">
+            <button type="submit" className="save-btn">Save</button>
+            <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
+          </div>
         </form>
       </div>
     </div>

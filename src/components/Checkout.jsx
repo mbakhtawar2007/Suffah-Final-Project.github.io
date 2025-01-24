@@ -4,9 +4,22 @@ import '../styles/Checkout.css';
 function Checkout() {
   const [shippingAddress, setShippingAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate if all fields are filled
+    if (!shippingAddress || !paymentMethod) {
+      setFormError('Please fill in all fields.');
+      return;
+    }
+
+    setFormError(''); // Clear any previous errors
+    // Reset form after submission (optional)
+    setShippingAddress('');
+    setPaymentMethod('');
+
     // Here you could send the form data to the server
     alert('Checkout Complete!');
   };
@@ -19,6 +32,8 @@ function Checkout() {
         <span>Step 2: Payment</span> → 
         <span>Step 3: Confirm</span>
       </div>
+
+      {formError && <p className="error">{formError}</p>} {/* Display error message */}
 
       <form onSubmit={handleSubmit}>
         <div className="form-section">
@@ -46,7 +61,7 @@ function Checkout() {
             <option value="bank-transfer">Bank Transfer</option>
           </select>
         </div>
-        <button type="submit">Proceed to Confirm</button>
+        <button type="submit" aria-label="Proceed to Confirm">Proceed to Confirm</button>
       </form>
     </div>
   );

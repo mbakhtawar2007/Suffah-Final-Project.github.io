@@ -16,7 +16,7 @@ function ProductListing() {
   const [sortBy, setSortBy] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
-  // Filter products based on search and category filter
+  // Memoize filtered products based on search and category filter
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       return (
@@ -26,7 +26,7 @@ function ProductListing() {
     });
   }, [products, search, categoryFilter]);
 
-  // Sort filtered products based on selected criteria
+  // Memoize sorted products based on selected criteria
   const sortedProducts = useMemo(() => {
     return filteredProducts.sort((a, b) => {
       if (sortBy === 'price') {

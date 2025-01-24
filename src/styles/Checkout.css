@@ -64,6 +64,14 @@ form button:hover {
   background-color: #3949ab;
 }
 
+/* Error Message */
+.error {
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .checkout {

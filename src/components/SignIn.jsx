@@ -4,51 +4,49 @@ import { useAuth } from '../context/AuthContext';
 import '../styles/SignIn.css';
 
 function SignIn() {
-  const { login, isAuthenticated } = useAuth(); // Use AuthContext for authentication
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Redirect if already authenticated
+  // Redirect to home page if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/'); // Redirect to home page
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Validate email and password inputs
   const validateInputs = () => {
     if (!/\S+@\S+\.\S+/.test(credentials.email)) {
       setError('Please enter a valid email address.');
       return false;
     }
-
     if (credentials.password.length < 6) {
       setError('Password must be at least 6 characters long.');
       return false;
     }
-
     return true;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!validateInputs()) {
-      return;
-    }
+    if (!validateInputs()) return;
 
     setLoading(true);
 
     try {
-      // Call login function from AuthContext
       await login(credentials.email, credentials.password);
       navigate('/'); // Redirect to home page on successful login
     } catch (err) {

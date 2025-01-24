@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import ErrorBoundary from '../src/components/ErrorBoundary'; // Import the ErrorBoundary component
 import '../src/styles/global.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// Error boundary for rendering issues
-try {
-  root.render(
-    <React.StrictMode>
+// Render the application wrapped in the ErrorBoundary component
+root.render(
+  <React.StrictMode>
+    <ErrorBoundary>
       <App />
-    </React.StrictMode>
-  );
-} catch (error) {
-  console.error('Error rendering the application:', error);
-}
+    </ErrorBoundary>
+  </React.StrictMode>
+);

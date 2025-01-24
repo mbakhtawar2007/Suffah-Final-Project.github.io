@@ -1,26 +1,29 @@
 /* Order History Page */
 .order-history {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .order-history h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #333;
+  margin-bottom: 20px;
 }
 
 .order-history table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .order-history th, .order-history td {
   text-align: left;
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -36,21 +39,31 @@
 .order-history button {
   background-color: #5c6bc0;
   color: white;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .order-history button:hover {
   background-color: #3949ab;
+  transform: scale(1.05);
 }
 
 /* Empty State */
-.order-history p {
+.empty-state {
   text-align: center;
   font-size: 1.2rem;
   color: #888;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #3498db;
+  font-weight: bold;
 }
 
 /* Responsive Design */
@@ -64,6 +77,6 @@
   }
 
   .order-history button {
-    padding: 5px 10px;
+    padding: 6px 12px;
   }
 }
