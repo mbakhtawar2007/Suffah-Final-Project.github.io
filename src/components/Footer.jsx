@@ -20,7 +20,7 @@ function Footer() {
             <li><a href="/" aria-label="Go to Home">Home</a></li>
             <li><a href="/products" aria-label="Browse Products">Products</a></li>
             <li><a href="/cart" aria-label="View Cart">Cart</a></li>
-            <li><a href="/signin" aria-label="Sign In to your account">Sign In</a></li>
+            {/* Removed Sign In link */}
           </ul>
         </div>
         <div className="footer-section">

@@ -4,15 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import '../styles/Navbar.css';
 
 function Navbar() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
-  const handleLogout = async () => {
-    try {
-      await logout(); // Logout function clears the token
-    } catch (error) {
-      console.error('Logout failed', error);
-    }
-  };
+  {/* Removed handleLogout function */}
 
   return (
     <nav className="navbar">
@@ -27,9 +21,9 @@ function Navbar() {
       <ul className="nav-links">
         <li>
           <NavLink
-            exact
+            exact="true"
             to="/"
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? "active-link" : undefined)}
             aria-current="page"
           >
             Home
@@ -38,62 +32,41 @@ function Navbar() {
         <li>
           <NavLink
             to="/products"
-            activeClassName="active-link"
+            className={({ isActive }) => (isActive ? "active-link" : undefined)}
             aria-current="page"
           >
             Products
           </NavLink>
         </li>
-        {isAuthenticated && (
-          <>
-            <li>
-              <NavLink
-                to="/cart"
-                activeClassName="active-link"
-                aria-current="page"
-              >
-                Cart
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/order-history"
-                activeClassName="active-link"
-                aria-current="page"
-              >
-                Orders
-              </NavLink>
-            </li>
-          </>
-        )}
-        {!isAuthenticated ? (
-          <li>
-            <NavLink
-              to="/signin"
-              activeClassName="active-link"
-              aria-current="page"
-            >
-              Sign In
-            </NavLink>
-          </li>
-        ) : (
-          <li>
-            <button
-              onClick={handleLogout}
-              className="signout-btn"
-              aria-label="Sign Out"
-              disabled={!logout}
-            >
-              Sign Out
-            </button>
-          </li>
-        )}
+<li>
+  <NavLink
+    to="/cart"
+    className={({ isActive }) => (isActive ? "active-link" : undefined)}
+    aria-current="page"
+  >
+    Cart
+  </NavLink>
+</li>
+<li>
+  <NavLink
+    to="/checkout"
+    className={({ isActive }) => (isActive ? "active-link" : undefined)}
+    aria-current="page"
+  >
+    Checkout
+  </NavLink>
+</li>
+<li>
+  <NavLink
+    to="/order-history"
+    className={({ isActive }) => (isActive ? "active-link" : undefined)}
+    aria-current="page"
+  >
+    Order History
+  </NavLink>
+</li>
       </ul>
-      {isAuthenticated && (
-        <p className="welcome" aria-live="polite">
-          Welcome, {user?.name || 'Guest'}!
-        </p>
-      )}
+      {/* Removed welcome message */}
     </nav>
   );
 }

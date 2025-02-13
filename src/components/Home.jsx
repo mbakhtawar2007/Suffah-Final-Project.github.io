@@ -28,9 +28,7 @@ function Home() {
               <a href="/products" className="cta-button" aria-label="Shop Now">
                 Shop Now
               </a>
-              <a href="/signup" className="cta-button secondary" aria-label="Join Us">
-                Join Us
-              </a>
+              {/* Removed Join Us link */}
             </div>
           </section>
 

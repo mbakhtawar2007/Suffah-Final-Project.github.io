@@ -2,7 +2,8 @@ import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import { AuthProvider, ProtectedRoute } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './context/ProtectedRoute';
 import { CartProvider } from './context/CartContext'; 
 import './styles/global.css';
 
@@ -12,8 +13,6 @@ const ProductListing = React.lazy(() => import('./components/ProductListing'));
 const ProductDetails = React.lazy(() => import('./components/ProductDetails'));
 const Cart = React.lazy(() => import('./components/Cart'));
 const Checkout = React.lazy(() => import('./components/Checkout'));
-const SignIn = React.lazy(() => import('./components/SignIn'));
-const SignUp = React.lazy(() => import('./components/SignUp'));
 const OrderHistory = React.lazy(() => import('./components/OrderHistory'));
 
 function App() {
@@ -52,8 +51,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
+                {/* Removed authentication routes */}
               </Routes>
             </Suspense>
           </div>
