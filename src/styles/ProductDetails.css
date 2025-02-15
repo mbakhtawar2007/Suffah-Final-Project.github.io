@@ -1,170 +1,168 @@
-/* General Layout Enhancements */
+/* Product Details Page */
 .product-details {
-  max-width: 950px;
-  margin: 50px auto;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  max-width: 1200px;
+  margin: var(--spacing-xl) auto;
+  background-color: var(--surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .product-details h1 {
-  font-size: 2.2rem;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: 700;
+  font-size: var(--font-size-xxl);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
 }
 
 .product-details img {
   width: 100%;
-  max-height: 450px;
+  max-height: 500px;
   object-fit: cover;
-  margin-bottom: 25px;
-  border-radius: 12px;
+  margin-bottom: var(--spacing-lg);
+  border-radius: var(--radius-md);
 }
 
 .product-details p {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 30px;
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
 }
 
 .product-details .price {
-  font-size: 1.8rem;
-  color: #4caf50;
-  font-weight: 600;
-  margin-bottom: 25px;
+  font-size: var(--font-size-xl);
+  color: var(--success);
+  font-weight: bold;
+  margin-bottom: var(--spacing-lg);
 }
 
 .product-details button {
-  background-color: #5c6bc0;
-  color: white;
-  padding: 16px 32px;
+  background-color: var(--primary);
+  color: var(--text-on-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .product-details button:hover {
-  background-color: #3949ab;
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
 /* Carousel */
 .product-carousel {
   display: flex;
   overflow-x: auto;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .product-carousel img {
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .product-carousel img:hover {
   transform: scale(1.1);
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 /* Reviews Section */
 .reviews-section {
-  margin-top: 40px;
+  margin-top: var(--spacing-xl);
 }
 
 .reviews-list {
   list-style: none;
   padding: 0;
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .reviews-list .review {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #ddd;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--primary-light);
 }
 
 .reviews-list .review-header {
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
 }
 
 .reviews-list .review p {
-  font-size: 1.1rem;
-  color: #666;
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
 }
 
 .reviews form input,
 .reviews form select,
 .reviews form textarea {
   width: 100%;
-  margin-bottom: 20px;
-  padding: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--primary-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  color: var(--text-primary);
 }
 
 .reviews form button {
-  background-color: #5c6bc0;
-  color: white;
+  background-color: var(--primary);
+  color: var(--text-on-primary);
   width: 100%;
-  padding: 16px;
+  padding: var(--spacing-md);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .reviews form button:hover {
-  background-color: #3949ab;
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
 /* Button Specific Styles */
 .add-to-cart-btn,
 .submit-review-btn {
-  background-color: #5c6bc0;
-  color: white;
-  padding: 16px 32px;
+  background-color: var(--primary);
+  color: var(--text-on-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .add-to-cart-btn:hover,
 .submit-review-btn:hover {
-  background-color: #3949ab;
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .product-details {
-    padding: 20px;
+    padding: var(--spacing-md);
   }
 
   .product-details h1 {
-    font-size: 2rem;
+    font-size: var(--font-size-xl);
   }
 
   .product-details p {
-    font-size: 1rem;
+    font-size: var(--font-size-sm);
   }
 
   .product-carousel {
-    gap: 8px;
+    gap: var(--spacing-xs);
   }
 
   .product-carousel img {
@@ -173,22 +171,22 @@
   }
 
   .reviews-list .review-header {
-    font-size: 1.1rem;
+    font-size: var(--font-size-md);
   }
 
   .reviews-list .review p {
-    font-size: 1rem;
+    font-size: var(--font-size-sm);
   }
 
   .reviews form input,
   .reviews form select,
   .reviews form textarea {
-    font-size: 1rem;
+    font-size: var(--font-size-sm);
   }
 
   .reviews form button,
   .add-to-cart-btn,
   .submit-review-btn {
-    padding: 12px 24px;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }

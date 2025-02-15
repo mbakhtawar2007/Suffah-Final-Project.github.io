@@ -1,61 +1,166 @@
-/* Updated Global Styles */
+/* Enhanced Global Styles */
 
-/* Define color variables */
+/* Color Variables */
 :root {
-  --primary-bg-color: #f4f4f9;
-  --primary-text-color: #444;
-  --button-bg-color: #3949ab;
-  --button-hover-bg-color: #303f9f;
-  --focus-border-color: #5c6bc0;
-  --font-size-default: 1rem; /* New font size variable */
-  --font-size-large: 1.8rem; /* New font size for headings */
+  /* Primary Colors */
+  --primary: #3949ab;
+  --primary-dark: #303f9f;
+  --primary-light: #5c6bc0;
+  
+  /* Secondary Colors */
+  --secondary: #ff4081;
+  --secondary-dark: #f50057;
+  --secondary-light: #ff79b0;
+  
+  /* Background Colors */
+  --background: #f4f4f9;
+  --surface: #ffffff;
+  
+  /* Text Colors */
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-on-primary: #ffffff;
+  
+  /* Status Colors */
+  --success: #4caf50;
+  --warning: #ff9800;
+  --error: #f44336;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Typography */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-xxl: 1.5rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.19);
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 }
 
+/* Base Styles */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--primary-bg-color);
-  color: var(--primary-text-color);
+  background-color: var(--background);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
+  line-height: 1.6;
 }
 
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: var(--spacing-md) 0;
+  line-height: 1.2;
+}
+
+h1 { font-size: var(--font-size-xxl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+h4 { font-size: var(--font-size-md); }
+h5 { font-size: var(--font-size-sm); }
+h6 { font-size: var(--font-size-xs); }
+
+p {
+  margin: var(--spacing-md) 0;
+}
+
+/* Buttons */
 button {
   cursor: pointer;
   font-family: inherit;
-  padding: 10px 20px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Added box-shadow transition */
+  border-radius: var(--radius-md);
+  background-color: var(--primary);
+  color: var(--text-on-primary);
+  transition: all 0.3s ease;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 button:hover {
-  background-color: var(--button-bg-color);
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added subtle shadow on hover */
+  background-color: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
-input, select {
+button:active {
+  transform: translateY(0);
+}
+
+button.secondary {
+  background-color: var(--secondary);
+}
+
+button.secondary:hover {
+  background-color: var(--secondary-dark);
+}
+
+/* Forms */
+input, select, textarea {
   font-family: inherit;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: var(--spacing-sm);
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.2);
   outline: none;
 }
 
-input:focus, select:focus {
-  border-color: var(--focus-border-color);
-  box-shadow: 0 0 5px rgba(92, 107, 192, 0.5);
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
 }
 
 .main-content {
-  min-height: calc(100vh - 80px); /* Subtract the height of the footer */
-  margin-bottom: 20px;
+  min-height: calc(100vh - 120px);
+  padding: var(--spacing-lg) 0;
 }
 
-/* Font size adjustments */
-h1, h2, h3 {
-  font-size: var(--font-size-large);
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  :root {
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.8rem;
+    --font-size-md: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.1rem;
+    --font-size-xxl: 1.2rem;
+  }
+  
+  .main-content {
+    padding: var(--spacing-md) 0;
+  }
+}
+
+@media (max-width: 480px) {
+  button {
+    width: 100%;
+    margin-bottom: var(--spacing-sm);
+  }
 }
