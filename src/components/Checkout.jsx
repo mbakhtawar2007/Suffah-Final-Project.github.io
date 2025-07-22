@@ -1,59 +1,56 @@
-import React, { useState } from 'react';
-import '../styles/Checkout.css';
 
 function Checkout() {
   const [shippingAddress, setShippingAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [formError, setFormError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate if all fields are filled
     if (!shippingAddress || !paymentMethod) {
       setFormError('Please fill in all fields.');
+      setSuccess(false);
       return;
     }
-
-    setFormError(''); // Clear any previous errors
-    // Reset form after submission (optional)
+    setFormError('');
+    setSuccess(true);
     setShippingAddress('');
     setPaymentMethod('');
-
-    // Here you could send the form data to the server
-    alert('Checkout Complete!');
   };
 
   return (
-    <div className="checkout">
+    <section className="checkout" aria-label="Checkout">
       <h2>Checkout</h2>
-      <div className="checkout-steps">
-        <span>Step 1: Shipping</span> → 
-        <span>Step 2: Payment</span> → 
+      <div className="checkout-steps" aria-label="Checkout Steps">
+        <span>Step 1: Shipping</span> &rarr;{' '}
+        <span>Step 2: Payment</span> &rarr;{' '}
         <span>Step 3: Confirm</span>
       </div>
 
-      {formError && <p className="error">{formError}</p>} {/* Display error message */}
+      {formError && <p className="error" role="alert">{formError}</p>}
+      {success && <p className="success" role="status">Checkout Complete!</p>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <label htmlFor="shipping-address">Shipping Address</label>
-          <input 
-            type="text" 
-            id="shipping-address" 
-            value={shippingAddress} 
-            onChange={(e) => setShippingAddress(e.target.value)} 
-            required 
+          <input
+            type="text"
+            id="shipping-address"
+            value={shippingAddress}
+            onChange={(e) => setShippingAddress(e.target.value)}
+            required
             placeholder="Enter your shipping address"
+            aria-label="Shipping Address"
           />
         </div>
         <div className="form-section">
           <label htmlFor="payment-method">Payment Method</label>
-          <select 
-            id="payment-method" 
-            value={paymentMethod} 
-            onChange={(e) => setPaymentMethod(e.target.value)} 
+          <select
+            id="payment-method"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
             required
+            aria-label="Payment Method"
           >
             <option value="">Select a payment method</option>
             <option value="credit-card">Credit Card</option>
@@ -63,7 +60,7 @@ function Checkout() {
         </div>
         <button type="submit" aria-label="Proceed to Confirm">Proceed to Confirm</button>
       </form>
-    </div>
+    </section>
   );
 }
 

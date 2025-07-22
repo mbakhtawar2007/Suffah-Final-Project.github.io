@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './EditProfileModal.css';
 
+
 function EditProfileModal({ user, onClose, onSave }) {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -9,11 +10,10 @@ function EditProfileModal({ user, onClose, onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({ ...user, name, email });
-    onClose();
   };
 
   return (
-    <div className="modal" role="dialog" aria-labelledby="edit-profile-modal" aria-hidden="false">
+    <div className="modal" role="dialog" aria-labelledby="edit-profile-modal" aria-modal="true">
       <div className="modal-content">
         <h2 id="edit-profile-modal">Edit Profile</h2>
         <form onSubmit={handleSubmit}>

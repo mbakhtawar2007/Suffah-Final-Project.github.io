@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/ProductDetails.css';
@@ -18,7 +19,7 @@ function ProductDetails() {
   };
 
   return (
-    <div className="product-details">
+    <section className="product-details" aria-label="Product Details">
       <h1>Product Name</h1>
       <div className="product-carousel" aria-label="Product Images">
         <img src="/assets/images/product1.jpg" alt="Product 1" />
@@ -48,6 +49,7 @@ function ProductDetails() {
             value={newReview.name}
             onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
             required
+            aria-label="Your Name"
           />
           <input
             type="number"
@@ -57,6 +59,7 @@ function ProductDetails() {
             min="1"
             max="5"
             required
+            aria-label="Rating (1-5)"
           />
           <textarea
             placeholder="Your Review"
@@ -67,7 +70,7 @@ function ProductDetails() {
           <button type="submit" className="submit-review-btn">Submit Review</button>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
 

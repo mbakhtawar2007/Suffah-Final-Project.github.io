@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/OrderHistory.css';
+
 
 function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulating fetching data
-    setTimeout(() => {
+    // Simulate fetching data
+    const timer = setTimeout(() => {
       setOrders([
         { id: 1, date: '2024-12-01', total: '$120', status: 'Delivered' },
         { id: 2, date: '2024-11-25', total: '$80', status: 'Shipped' },
       ]);
       setLoading(false);
-    }, 1500); // Simulate 1.5s loading time
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="order-history">
+    <section className="order-history" aria-label="Order History">
       <h2>Your Orders</h2>
       {loading ? (
         <div className="loading">Loading...</div>
@@ -42,15 +42,14 @@ function OrderHistory() {
                 <td>{order.total}</td>
                 <td>{order.status}</td>
                 <td>
-                  <button className="view-details">View Details</button>
-                  {/* Add more actions, like Reorder or Track Status */}
+                  <button className="view-details" aria-label={`View details for order ${order.id}`}>View Details</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-    </div>
+    </section>
   );
 }
 

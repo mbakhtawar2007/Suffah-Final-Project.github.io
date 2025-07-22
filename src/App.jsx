@@ -1,19 +1,21 @@
-import React, { Suspense } from 'react';
+
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
-import { CartProvider } from './context/CartContext'; 
+import { CartProvider } from './context/CartContext';
 import './styles/global.css';
 
-// Lazy-loaded components
-const Home = React.lazy(() => import('./components/Home'));
-const ProductListing = React.lazy(() => import('./components/ProductListing'));
-const ProductDetails = React.lazy(() => import('./components/ProductDetails'));
-const Cart = React.lazy(() => import('./components/Cart'));
-const Checkout = React.lazy(() => import('./components/Checkout'));
-const OrderHistory = React.lazy(() => import('./components/OrderHistory'));
+// Lazy-loaded components (use lazy for clarity)
+const Home = lazy(() => import('./components/Home'));
+const ProductListing = lazy(() => import('./components/ProductListing'));
+const ProductDetails = lazy(() => import('./components/ProductDetails'));
+const Cart = lazy(() => import('./components/Cart'));
+const Checkout = lazy(() => import('./components/Checkout'));
+const OrderHistory = lazy(() => import('./components/OrderHistory'));
+const Login = lazy(() => import('./components/Login'));
 
 function App() {
   return (
@@ -21,12 +23,13 @@ function App() {
       <CartProvider>
         <Router>
           <Navbar />
-          <div className="main-content">
-            <Suspense fallback={<div>Loading...</div>}>
+          <main id="main-content" className="main-content">
+            <Suspense fallback={<div className="loading">Loading...</div>}>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<ProductListing />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
+                <Route path="/login" element={<Login />} />
                 <Route
                   path="/cart"
                   element={
@@ -51,10 +54,9 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                {/* Removed authentication routes */}
               </Routes>
             </Suspense>
-          </div>
+          </main>
           <Footer />
         </Router>
       </CartProvider>

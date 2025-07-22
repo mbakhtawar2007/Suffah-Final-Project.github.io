@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import '../styles/UserProfile.css';
 import EditProfileModal from './EditProfileModal';
 
+
 function UserProfile({ user: { name, email, avatar } }) {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleSave = (updatedUser) => {
-    // Logic to save the updated user details
+    // Here you would update the user profile in your app state or backend
     console.log('Updated User:', updatedUser);
+    setModalOpen(false);
   };
 
   return (
-    <div className="user-profile" aria-label={`Profile of ${name}`} role="region">
+    <section className="user-profile" aria-label={`Profile of ${name}`} role="region">
       <img
         src={avatar}
         alt={`${name}'s avatar`}
@@ -30,7 +32,7 @@ function UserProfile({ user: { name, email, avatar } }) {
           onSave={handleSave}
         />
       )}
-    </div>
+    </section>
   );
 }
 
