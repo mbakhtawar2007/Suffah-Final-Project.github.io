@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import UserProfileWrapper from './components/UserProfileWrapper';
 import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/products" element={<ProductListing />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<UserProfileWrapper />} />
                 <Route
                   path="/cart"
                   element={

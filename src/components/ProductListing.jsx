@@ -1,13 +1,14 @@
 
 import React, { useState, useMemo } from 'react';
+import '../styles/ProductListing.css';
 import { Link } from 'react-router-dom';
 
 const PRODUCTS = [
-  { id: 1, name: 'Smartphone', price: 699, category: 'Electronics', image: '/placeholder-250.svg' },
-  { id: 2, name: 'Sneakers', price: 199, category: 'Fashion', image: '/placeholder-250.svg' },
-  { id: 3, name: 'Microwave', price: 120, category: 'Home Appliances', image: '/placeholder-250.svg' },
-  { id: 4, name: 'Laptop', price: 999, category: 'Electronics', image: '/placeholder-250.svg' },
-  { id: 5, name: 'Jacket', price: 129, category: 'Fashion', image: '/placeholder-250.svg' },
+  { id: 1, name: 'Smartphone', price: 699, category: 'Electronics', image: '/placeholder-250.svg', description: 'Latest smartphone with high-resolution display and long battery life.' },
+  { id: 2, name: 'Sneakers', price: 199, category: 'Fashion', image: '/placeholder-250.svg', description: 'Comfortable and stylish sneakers for everyday wear.' },
+  { id: 3, name: 'Microwave', price: 120, category: 'Home Appliances', image: '/placeholder-250.svg', description: 'Efficient microwave oven for quick and easy meals.' },
+  { id: 4, name: 'Laptop', price: 999, category: 'Electronics', image: '/placeholder-250.svg', description: 'Powerful laptop for work, study, and entertainment.' },
+  { id: 5, name: 'Jacket', price: 129, category: 'Fashion', image: '/placeholder-250.svg', description: 'Warm and trendy jacket for all seasons.' },
 ];
 
 function ProductListing() {
@@ -50,7 +51,7 @@ function ProductListing() {
         </select>
         <input
           type="text"
-          placeholder="Search products"
+          placeholder="Search products by name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search products"
@@ -60,16 +61,24 @@ function ProductListing() {
       {/* Product Cards Grid */}
       <div className="products-grid">
         {displayedProducts.length === 0 ? (
-          <p>No products found</p>
+          <div className="empty-state">
+            <img src="/placeholder-250.svg" alt="No products found" style={{width:'120px',marginBottom:'16px',opacity:0.7}} />
+            <p>No products found. Try adjusting your search or filters.</p>
+          </div>
         ) : (
           displayedProducts.map((product) => (
-            <Link to={`/products/${product.id}`} key={product.id}>
-              <div className="product-card" aria-label={`Product: ${product.name}`}>
-                <img src={product.image} alt={product.name} className="product-image" />
-                <h3>{product.name}</h3>
-                <p className="price">${product.price}</p>
-                <span className="badge">{product.category}</span>
-                <button className="add-to-cart-btn">Add to Cart</button>
+            <Link to={`/products/${product.id}`} key={product.id} style={{textDecoration:'none'}}>
+              <div className="product-card" aria-label={`Product: ${product.name}`} role="region">
+                <div style={{position:'relative',width:'100%'}}>
+                  <img src={product.image} alt={product.name} className="product-image" loading="lazy" />
+                  <span className="badge" style={{position:'absolute',top:'10px',left:'10px'}}>{product.category}</span>
+                </div>
+                <h3 className="product-name">{product.name}</h3>
+                <p className="product-price">${product.price}</p>
+                <p className="product-description">{product.description || 'No description available for this product yet.'}</p>
+                <button className="add-to-cart-btn" aria-label={`Add ${product.name} to Cart`}>
+                  Add to Cart
+                </button>
               </div>
             </Link>
           ))
