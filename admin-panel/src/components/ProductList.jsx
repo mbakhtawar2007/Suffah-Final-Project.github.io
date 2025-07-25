@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchProducts, deleteProduct } from '../services/api';
 
-const ProductList = () => {
+const ProductList = ({ onEdit }) => {
   const [products, setProducts] = useState([]);
 
   const getProducts = async () => {
@@ -10,23 +10,20 @@ const ProductList = () => {
       setProducts(res.data);
     } catch (err) {
       if (err.response) {
-        // Server responded with a status other than 2xx
         console.error('Error fetching products:', err.response.status, err.response.data);
       } else if (err.request) {
-        // Request was made but no response received
         console.error('Error fetching products: No response received', err.request);
       } else {
-        // Something else happened
         console.error('Error fetching products:', err.message);
       }
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure?')) return;
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
       await deleteProduct(id);
-      getProducts(); // Refresh list
+      getProducts(); // Refresh
     } catch (err) {
       console.error('Delete failed:', err);
     }
@@ -39,14 +36,23 @@ const ProductList = () => {
   return (
     <div>
       <h2>All Products</h2>
-      <ul>
-        {products.map((p) => (
-          <li key={p._id}>
-            {p.name} - ${p.price}
-            <button onClick={() => handleDelete(p._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <div className="grid">
+        {products.length > 0 ? (
+          products.map((p) => (
+            <div key={p._id} className="card">
+              <h3>{p.name}</h3>
+              <p><strong>Price:</strong> ${p.price}</p>
+              <p>{p.description}</p>
+              <div className="buttons">
+                <button onClick={() => onEdit(p)}>✏️ Edit</button>
+                <button onClick={() => handleDelete(p._id)} className="danger">🗑️ Delete</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No products found.</p>
+        )}
+      </div>
     </div>
   );
 };
