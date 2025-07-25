@@ -1,14 +1,40 @@
-
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../styles/ProductDetails.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
 function ProductDetails() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [reviews, setReviews] = useState([
     { id: 1, name: 'Alice', rating: 5, comment: 'Amazing product!' },
     { id: 2, name: 'Bob', rating: 4, comment: 'Great quality but a bit expensive.' },
   ]);
   const [newReview, setNewReview] = useState({ name: '', rating: '', comment: '' });
+
+  useEffect(() => {
+    async function fetchProduct() {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/products/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch product details');
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [id]);
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -18,16 +44,27 @@ function ProductDetails() {
     }
   };
 
+  if (loading) {
+    return <div className="loading">Loading product details...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
+
+  if (!product) {
+    return <div className="error">Product not found.</div>;
+  }
+
   return (
     <section className="product-details" aria-label="Product Details">
-      <h1>Product Name</h1>
+      <h1>{product.name}</h1>
       <div className="product-carousel" aria-label="Product Images">
-        <img src="/assets/images/product1.jpg" alt="Product 1" />
-        <img src="/assets/images/product2.jpg" alt="Product 2" />
+        <img src={product.image || '/placeholder-250.svg'} alt={product.name} />
       </div>
-      <p>Description of the product goes here.</p>
-      <div className="price">$699</div>
-      <button className="add-to-cart-btn">Add to Cart</button>
+      <p>{product.description}</p>
+      <div className="price">${product.price}</div>
+      <button className="add-to-cart-btn" onClick={() => addToCart(product)}>Add to Cart</button>
 
       <div className="reviews-section">
         <h2>Customer Reviews</h2>
@@ -73,16 +110,5 @@ function ProductDetails() {
     </section>
   );
 }
-
-ProductDetails.propTypes = {
-  reviews: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      rating: PropTypes.number.isRequired,
-      comment: PropTypes.string.isRequired,
-    })
-  ),
-};
 
 export default ProductDetails;

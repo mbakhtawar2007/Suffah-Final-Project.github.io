@@ -1,25 +1,41 @@
-
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../styles/ProductListing.css';
 import { Link } from 'react-router-dom';
 
-const PRODUCTS = [
-  { id: 1, name: 'Smartphone', price: 699, category: 'Electronics', image: '/placeholder-250.svg', description: 'Latest smartphone with high-resolution display and long battery life.' },
-  { id: 2, name: 'Sneakers', price: 199, category: 'Fashion', image: '/placeholder-250.svg', description: 'Comfortable and stylish sneakers for everyday wear.' },
-  { id: 3, name: 'Microwave', price: 120, category: 'Home Appliances', image: '/placeholder-250.svg', description: 'Efficient microwave oven for quick and easy meals.' },
-  { id: 4, name: 'Laptop', price: 999, category: 'Electronics', image: '/placeholder-250.svg', description: 'Powerful laptop for work, study, and entertainment.' },
-  { id: 5, name: 'Jacket', price: 129, category: 'Fashion', image: '/placeholder-250.svg', description: 'Warm and trendy jacket for all seasons.' },
-];
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 function ProductListing() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
+  useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/products`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
   // Filter and sort products efficiently
   const displayedProducts = useMemo(() => {
-    let filtered = PRODUCTS.filter((product) =>
+    let filtered = products.filter((product) =>
       product.name.toLowerCase().includes(search.toLowerCase()) &&
       (categoryFilter ? product.category === categoryFilter : true)
     );
@@ -27,7 +43,15 @@ function ProductListing() {
       filtered = [...filtered].sort((a, b) => a.price - b.price);
     }
     return filtered;
-  }, [search, sortBy, categoryFilter]);
+  }, [products, search, sortBy, categoryFilter]);
+
+  if (loading) {
+    return <div className="loading">Loading products...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Error: {error}</div>;
+  }
 
   return (
     <div className="product-listing">
@@ -67,16 +91,29 @@ function ProductListing() {
           </div>
         ) : (
           displayedProducts.map((product) => (
-            <Link to={`/products/${product.id}`} key={product.id} style={{textDecoration:'none'}}>
+            <Link to={`/products/${product._id}`} key={product._id} style={{textDecoration:'none'}}>
               <div className="product-card" aria-label={`Product: ${product.name}`} role="region">
                 <div style={{position:'relative',width:'100%'}}>
-                  <img src={product.image} alt={product.name} className="product-image" loading="lazy" />
-                  <span className="badge" style={{position:'absolute',top:'10px',left:'10px'}}>{product.category}</span>
+                  <img
+                    src={product.image || '/placeholder-250.svg'}
+                    alt={product.name}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/placeholder-250.svg';
+                    }}
+                  />
+                  <span className="badge" style={{position:'absolute',top:'10px',left:'10px'}}>{product.category || 'Category'}</span>
                 </div>
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-price">${product.price}</p>
                 <p className="product-description">{product.description || 'No description available for this product yet.'}</p>
-                <button className="add-to-cart-btn" aria-label={`Add ${product.name} to Cart`}>
+                <button
+                  className="add-to-cart-btn"
+                  aria-label={`Add ${product.name} to Cart`}
+                  onClick={() => addToCart(product)}
+                >
                   Add to Cart
                 </button>
               </div>

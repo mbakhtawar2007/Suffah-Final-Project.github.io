@@ -6,6 +6,7 @@ import UserProfileWrapper from './components/UserProfileWrapper';
 import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './context/ProtectedRoute';
+import AdminPanel from './components/AdminPanel';
 import { CartProvider } from './context/CartContext';
 import './styles/global.css';
 
@@ -56,6 +57,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/admin" element={<AdminPanel />} />
               </Routes>
             </Suspense>
           </main>

@@ -1,25 +1,30 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/global.css';
 import '../styles/LoginCard.css';
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, error: authError, loading, user } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simple mock authentication
-    if (username && password) {
-      login({ username });
+  useEffect(() => {
+    if (user) {
       navigate('/');
-    } else {
-      setError('Please enter both username and password.');
     }
+  }, [user, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLocalError('');
+    if (!username || !password) {
+      setLocalError('Please enter both username and password.');
+      return;
+    }
+    await login(username, password);
   };
 
   return (
@@ -33,6 +38,7 @@ const Login = () => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          disabled={loading}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -41,9 +47,12 @@ const Login = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
         />
-        <button type="submit">Login</button>
-        {error && <div className="error">{error}</div>}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+        {(localError || authError) && <div className="error">{localError || authError}</div>}
       </form>
     </div>
   );
