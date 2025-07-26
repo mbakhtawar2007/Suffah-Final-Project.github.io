@@ -6,13 +6,11 @@ class ErrorBoundary extends Component {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
-    // Update state to indicate an error has occurred
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log error to an external service, if needed
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
   }
 
@@ -21,7 +19,7 @@ class ErrorBoundary extends Component {
       return <h1>Something went wrong. Please try again later.</h1>;
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }
 

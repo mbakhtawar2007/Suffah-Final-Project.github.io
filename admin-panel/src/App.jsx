@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductList from './components/ProductList';
 import ProductForm from './components/ProductForm';
+import './admin.css';
 
 const App = () => {
   const [editingProduct, setEditingProduct] = useState(null); // null means create mode

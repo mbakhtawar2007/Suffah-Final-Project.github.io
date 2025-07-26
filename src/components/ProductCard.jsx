@@ -6,32 +6,42 @@ function ProductCard({ product }) {
 
   const handleAddToCart = () => {
     addToCart(product);
-    // For accessibility: Announcing that the product has been added to the cart
-    const announcement = `${product.name} has been added to your cart.`;
+
     const liveRegion = document.getElementById('live-region');
-    liveRegion.textContent = announcement;
+    if (liveRegion) {
+      liveRegion.textContent = `${product.name} has been added to your cart.`;
+    }
   };
 
   return (
-    <div className="product-card" aria-label={`Product: ${product.name}`} role="region">
+    <div className="product-card" role="region" aria-labelledby={`product-${product.id}`}>
       <img
         src={product.image}
         alt={product.name}
-        loading="lazy" // Lazy loading for images
+        loading="lazy"
         className="product-image"
       />
-      <h3>{product.name}</h3>
-      <p>${product.price}</p>
-      <button 
-        onClick={handleAddToCart} 
-        aria-label={`Add ${product.name} to Cart`}
-        aria-live="assertive" // Announcing actions to screen readers
+      <h3 id={`product-${product.id}`}>{product.name}</h3>
+      <p>${Number(product.price).toFixed(2)}</p>
+      <button
+        onClick={handleAddToCart}
+        aria-label={`Add ${product.name} to cart`}
       >
         Add to Cart
       </button>
 
-      {/* Live region for screen readers */}
-      <div id="live-region" aria-live="polite" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden' }}></div>
+      {/* Screen reader live region */}
+      <div
+        id="live-region"
+        aria-live="polite"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }}
+      />
     </div>
   );
 }

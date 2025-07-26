@@ -4,18 +4,28 @@ import { createProduct, updateProduct } from '../services/api';
 
 const ProductForm = ({ editingProduct, onClearEdit }) => {
   const [form, setForm] = useState({ name: '', price: '', description: '' });
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     if (editingProduct) {
       setForm(editingProduct);
+      setImageFile(null);
     } else {
       setForm({ name: '', price: '', description: '' });
+      setImageFile(null);
     }
   }, [editingProduct]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === 'price' ? Number(value) : value,
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -23,16 +33,17 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
 
     try {
       if (editingProduct) {
-        await updateProduct(editingProduct._id, form);
-        alert('Product updated!');
+        await updateProduct(editingProduct._id, form, imageFile);
       } else {
-        await createProduct(form);
-        alert('Product added!');
+        await createProduct(form, imageFile);
       }
       setForm({ name: '', price: '', description: '' });
+      setImageFile(null);
       onClearEdit();
-    } catch (err) {
-      console.error('Error saving product:', err);
+      alert(editingProduct ? 'Product updated successfully!' : 'Product added successfully!');
+    } catch (error) {
+      console.error('Error submitting product:', error);
+      alert('Failed to submit product. Please try again.');
     }
   };
 
@@ -61,6 +72,12 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
           value={form.description}
           placeholder="Description"
           onChange={handleChange}
+        />
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleImageChange}
         />
         <button type="submit">{editingProduct ? 'Update' : 'Add'} Product</button>
         {editingProduct && <button type="button" onClick={onClearEdit} className="danger">Cancel Edit</button>}

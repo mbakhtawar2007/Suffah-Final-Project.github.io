@@ -1,45 +1,111 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
-export const AuthContext = createContext();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  const login = async (username, password) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!response.ok) {
-        throw new Error('Invalid username or password');
+  const [token, setToken] = useState(() => localStorage.getItem('jwtToken') || '');
+
+  useEffect(() => {
+    if (token && !user) {
+      try {
+        const decoded = jwtDecode(token);
+        setUser(decoded);
+        localStorage.setItem('user', JSON.stringify(decoded));
+      } catch (e) {
+        // Invalid token, clear auth
+        setUser(null);
+        setToken('');
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('user');
       }
-      const data = await response.json();
-      setUser(data.user);
-    } catch (err) {
-      setError(err.message);
-      setUser(null);
-    } finally {
-      setLoading(false);
     }
+  }, [token, user]);
+
+  const login = async (email, password) => {
+    // 🔐 Try login
+    let res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setUser(data.user);
+      setToken(data.token);
+      localStorage.setItem('jwtToken', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      return data.user;
+    }
+
+    // ✏️ If login fails, register then login
+    const registerRes = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: email, email, password }),
+    });
+
+    if (!registerRes.ok) {
+      throw new Error('Registration failed');
+    }
+
+    // 🔁 Re-attempt login
+    res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) throw new Error('Login failed after registration');
+
+    const data = await res.json();
+    setUser(data.user);
+    setToken(data.token);
+    localStorage.setItem('jwtToken', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    return data.user;
+  };
+
+  const register = async (username, email, password) => {
+    const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password }),
+    });
+    if (!res.ok) throw new Error('Registration failed');
+    return await res.json();
   };
 
   const logout = () => {
     setUser(null);
+    setToken('');
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, error }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isAuthenticated: !!token,
+        login,
+        register,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   return useContext(AuthContext);
-};
+}

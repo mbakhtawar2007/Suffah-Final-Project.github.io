@@ -9,38 +9,27 @@ function EditProfileModal({ user, onClose, onSave }) {
   const [avatarPreview, setAvatarPreview] = useState(user.avatar);
   const modalRef = useRef(null);
 
-  // Effect to update local state if the user prop changes (e.g., after a save)
   useEffect(() => {
     setName(user.name);
     setEmail(user.email);
     setAvatarPreview(user.avatar);
-    setAvatarFile(null); // Clear file input on user change
+    setAvatarFile(null);
   }, [user]);
 
-  // Close modal on escape key press
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+      if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Close modal when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
-      }
+      if (modalRef.current && !modalRef.current.contains(event.target)) onClose();
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
   const handleAvatarChange = (e) => {
@@ -48,20 +37,16 @@ function EditProfileModal({ user, onClose, onSave }) {
     if (file) {
       setAvatarFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result);
-      };
+      reader.onloadend = () => setAvatarPreview(reader.result);
       reader.readAsDataURL(file);
     } else {
       setAvatarFile(null);
-      setAvatarPreview(user.avatar); // Revert to original if no file selected
+      setAvatarPreview(user.avatar);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real application, you'd upload the avatarFile and get its URL.
-    // For this example, we'll just pass the preview URL.
     onSave({ ...user, name, email, avatar: avatarPreview, avatarFile });
   };
 
@@ -72,15 +57,13 @@ function EditProfileModal({ user, onClose, onSave }) {
         <form onSubmit={handleSubmit}>
           <div className="avatar-upload-section">
             <img src={avatarPreview} alt="User Avatar" className="avatar-preview" />
-            <label htmlFor="avatar-upload" className="upload-button">
-              Change Avatar
-            </label>
+            <label htmlFor="avatar-upload" className="upload-button">Change Avatar</label>
             <input
               type="file"
               id="avatar-upload"
               accept="image/*"
               onChange={handleAvatarChange}
-              style={{ display: 'none' }} // Hide the actual file input
+              style={{ display: 'none' }}
               aria-label="Upload new avatar image"
             />
           </div>
@@ -96,6 +79,7 @@ function EditProfileModal({ user, onClose, onSave }) {
               aria-label="Your name"
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
@@ -107,13 +91,10 @@ function EditProfileModal({ user, onClose, onSave }) {
               aria-label="Your email"
             />
           </div>
+
           <div className="modal-actions">
-            <button type="submit" className="save-btn">
-              Save
-            </button>
-            <button type="button" className="cancel-btn" onClick={onClose}>
-              Cancel
-            </button>
+            <button type="submit" className="save-btn">Save</button>
+            <button type="button" className="cancel-btn" onClick={onClose}>Cancel</button>
           </div>
         </form>
       </div>

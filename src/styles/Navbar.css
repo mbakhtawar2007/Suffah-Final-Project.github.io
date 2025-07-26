@@ -1,6 +1,8 @@
 /* Enhanced Navbar Styles */
 .navbar {
-  background-color: var(--color-bg-secondary);
+  background: rgba(28, 28, 28, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--color-text-primary);
   display: flex;
   justify-content: space-between;
@@ -10,6 +12,18 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 12px var(--color-shadow-dark);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.navbar.scrolled {
+  background: rgba(28, 28, 28, 0.95);
+  box-shadow: 0 8px 24px var(--color-shadow-dark);
+}
+
+.navbar .nav-links a:focus {
+  outline: 2px solid var(--color-accent-amber);
+  outline-offset: var(--spacing-xs);
+  box-shadow: 0 0 0 4px rgba(255,193,7,0.15);
 }
 
 .navbar .logo {

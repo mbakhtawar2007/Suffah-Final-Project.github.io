@@ -20,45 +20,47 @@ function Home() {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    // Simulate fetching data for categories and products
     const fetchData = async () => {
       try {
-        // Simulate network delay for categories
-        const categoriesResponse = await new Promise(resolve => setTimeout(() => {
-          resolve({
-            ok: true,
-            json: () => Promise.resolve([
-              { id: 1, name: 'Electronics', description: 'Explore the latest gadgets and devices.', icon: '⚡' },
-              { id: 2, name: 'Fashion', description: 'Stay trendy with our exclusive collections.', icon: '👗' },
-              { id: 3, name: 'Home Appliances', description: 'Upgrade your home with cutting-edge appliances.', icon: '🏠' },
-              { id: 4, name: 'Books', description: 'Dive into new worlds with our vast collection.', icon: '📚' },
-              { id: 5, name: 'Sports & Outdoors', description: 'Gear up for your next adventure.', icon: '🚴' },
-            ])
-          });
-        }, 800));
+        const categoriesResponse = await new Promise(resolve =>
+          setTimeout(() => {
+            resolve({
+              ok: true,
+              json: () =>
+                Promise.resolve([
+                  { id: 1, name: 'Electronics', description: 'Explore the latest gadgets and devices.', icon: '⚡' },
+                  { id: 2, name: 'Fashion', description: 'Stay trendy with our exclusive collections.', icon: '👗' },
+                  { id: 3, name: 'Home Appliances', description: 'Upgrade your home with cutting-edge appliances.', icon: '🏠' },
+                  { id: 4, name: 'Books', description: 'Dive into new worlds with our vast collection.', icon: '📚' },
+                  { id: 5, name: 'Sports & Outdoors', description: 'Gear up for your next adventure.', icon: '🚴' },
+                ]),
+            });
+          }, 800)
+        );
 
         if (!categoriesResponse.ok) throw new Error('Failed to fetch categories');
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
 
-        // Simulate network delay for featured products
-        const productsResponse = await new Promise(resolve => setTimeout(() => {
-          resolve({
-            ok: true,
-            json: () => Promise.resolve([
-              { id: 101, name: 'Wireless Headphones', price: 149.99, imageUrl: 'https://via.placeholder.com/150/FFD700/000000?text=Headphones', description: 'Immersive sound experience.' },
-              { id: 102, name: 'Smartwatch', price: 199.99, imageUrl: 'https://via.placeholder.com/150/FFD700/000000?text=Smartwatch', description: 'Track your fitness and notifications.' },
-              { id: 103, name: 'Designer Dress', price: 79.50, imageUrl: 'https://via.placeholder.com/150/FFD700/000000?text=Dress', description: 'Elegant and comfortable.' },
-              { id: 104, name: 'Coffee Maker', price: 89.00, imageUrl: 'https://via.placeholder.com/150/FFD700/000000?text=Coffee+Maker', description: 'Brew your perfect cup every morning.' },
-              { id: 105, name: 'Running Shoes', price: 110.00, imageUrl: 'https://via.placeholder.com/150/FFD700/000000?text=Shoes', description: 'Lightweight and supportive.' },
-            ])
-          });
-        }, 1200));
+        const productsResponse = await new Promise(resolve =>
+          setTimeout(() => {
+            resolve({
+              ok: true,
+              json: () =>
+                Promise.resolve([
+                  { id: 101, name: 'Wireless Headphones', price: 149.99, imageUrl: '/placeholder-250.svg', description: 'Immersive sound experience.' },
+                  { id: 102, name: 'Smartwatch', price: 199.99, imageUrl: '/placeholder-250.svg', description: 'Track your fitness and notifications.' },
+                  { id: 103, name: 'Designer Dress', price: 79.5, imageUrl: '/placeholder-250.svg', description: 'Elegant and comfortable.' },
+                  { id: 104, name: 'Coffee Maker', price: 89.0, imageUrl: '/placeholder-250.svg', description: 'Brew your perfect cup every morning.' },
+                  { id: 105, name: 'Running Shoes', price: 110.0, imageUrl: '/placeholder-250.svg', description: 'Lightweight and supportive.' },
+                ]),
+            });
+          }, 1200)
+        );
 
         if (!productsResponse.ok) throw new Error('Failed to fetch featured products');
         const productsData = await productsResponse.json();
         setFeaturedProducts(productsData);
-
       } catch (err) {
         setError(err);
       } finally {
@@ -69,33 +71,31 @@ function Home() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="error">Error: {error.message}</div>;
-  }
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error.message}</div>;
 
   return (
     <main>
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <section className="hero enhanced-hero" aria-labelledby="hero-heading">
         <div className="hero-bg" />
         <div className="hero-content">
           <h1 id="hero-heading" className="animated-heading">Welcome to ShopEase</h1>
-          <p className="animated-subheading">Your one-stop destination for exclusive deals, trending products, and seamless shopping.</p>
+          <p className="animated-subheading">
+            Your one-stop destination for exclusive deals, trending products, and seamless shopping.
+          </p>
           <div className="search-bar-container">
-            <input type="search" placeholder="Search for the latest gadgets, fashion, and more..." className="search-input" aria-label="Search products" />
+            <input
+              type="search"
+              placeholder="Search for the latest gadgets, fashion, and more..."
+              className="search-input"
+              aria-label="Search products"
+            />
             <button className="search-button">Search</button>
           </div>
           <div className="cta-buttons">
-            <a href="/products" className="cta-button" aria-label="Shop Now">
-              Shop Now
-            </a>
-            <a href="/profile" className="cta-button secondary-cta" aria-label="View Profile">
-              View Profile
-            </a>
+            <a href="/products" className="cta-button" aria-label="Shop Now">Shop Now</a>
+            <a href="/profile" className="cta-button secondary-cta" aria-label="View Profile">View Profile</a>
           </div>
         </div>
       </section>
@@ -142,9 +142,18 @@ function Home() {
         <div className="newsletter-content">
           <span className="newsletter-icon" aria-hidden="true">📧</span>
           <h2 id="newsletter-heading" className="section-heading animated-heading">Stay Updated!</h2>
-          <p className="newsletter-description animated-subheading">Subscribe to our newsletter and never miss out on <strong>exclusive deals</strong>, <strong>new arrivals</strong>, and <strong>shopping tips</strong>.<br/>Get the best of ShopEase delivered to your inbox!</p>
+          <p className="newsletter-description animated-subheading">
+            Subscribe to our newsletter and never miss out on <strong>exclusive deals</strong>, <strong>new arrivals</strong>, and <strong>shopping tips</strong>.
+            <br />Get the best of ShopEase delivered to your inbox!
+          </p>
           <form className="newsletter-form" autoComplete="off">
-            <input type="email" placeholder="Enter your email address" className="newsletter-input" aria-label="Enter your email for newsletter" required />
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              className="newsletter-input"
+              aria-label="Enter your email for newsletter"
+              required
+            />
             <button className="newsletter-button" type="submit">Subscribe</button>
           </form>
           <small className="newsletter-privacy">We respect your privacy. Unsubscribe anytime.</small>
