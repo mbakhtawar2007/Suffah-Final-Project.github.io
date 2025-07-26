@@ -95,7 +95,6 @@ function Home() {
           </div>
           <div className="cta-buttons">
             <a href="/products" className="cta-button" aria-label="Shop Now">Shop Now</a>
-            <a href="/profile" className="cta-button secondary-cta" aria-label="View Profile">View Profile</a>
           </div>
         </div>
       </section>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
   const navbarRef = useRef(null);
   const hamburgerRef = useRef(null);
@@ -52,9 +54,7 @@ function Navbar() {
     { to: '/order-history', label: 'Order History' },
   ];
 
-  if (user) {
-    navItems.push({ to: '/profile', label: 'Profile' });
-  }
+  // Profile link removed
 
   return (
     <nav className="navbar" aria-label="Main navigation" ref={navbarRef}>
@@ -101,6 +101,32 @@ function Navbar() {
             </NavLink>
           </li>
         ))}
+        {user && (
+          <li>
+            <button
+              onClick={() => {
+                logout();
+                setMenuOpen(false);
+                navigate('/login');
+              }}
+              className="logout-btn"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#e53e3e',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '1em',
+                padding: '0.5rem 1rem',
+                borderRadius: '6px',
+                marginLeft: '0.5rem',
+              }}
+              aria-label="Logout"
+            >
+              Logout
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   );

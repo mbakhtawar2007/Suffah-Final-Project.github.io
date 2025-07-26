@@ -12,6 +12,7 @@ function LoginForm({ onSwitch }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,11 @@ function LoginForm({ onSwitch }) {
       const { data } = await loginUser({ email, password });
 
       localStorage.setItem('jwtToken', data.token);
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+      } else {
+        localStorage.removeItem('rememberMe');
+      }
       setUser(data.user);
       setSuccess('✅ Logged in successfully!');
       setTimeout(() => window.location.reload(), 800); // delay reload for user to see success
@@ -97,6 +103,18 @@ function LoginForm({ onSwitch }) {
           {!isPasswordValid && 'Password is required.'}
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '-0.5rem', marginTop: '-0.5rem' }}>
+          <input
+            id="remember-me"
+            type="checkbox"
+            checked={rememberMe}
+            onChange={() => setRememberMe((v) => !v)}
+            style={{ width: '1rem', height: '1rem' }}
+          />
+          <label htmlFor="remember-me" style={{ fontSize: '0.97em', color: '#4a5568', cursor: 'pointer' }}>
+            Remember Me
+          </label>
+        </div>
         <button type="submit" disabled={loading || !isFormValid}>
           {loading ? 'Logging in...' : 'Login'}
         </button>
