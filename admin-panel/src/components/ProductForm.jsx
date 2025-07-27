@@ -1,9 +1,10 @@
-// components/ProductForm.jsx
+// admin-panel/src/components/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { createProduct, updateProduct } from '../services/api';
 
-const ProductForm = ({ editingProduct, onClearEdit }) => {
-  const [form, setForm] = useState({ name: '', price: '', description: '' });
+// Add onProductSubmit prop
+const ProductForm = ({ editingProduct, onClearEdit, onProductSubmit }) => { 
+  const [form, setForm] = useState({ name: '', price: '', description: '', category: '' }); // Added category
   const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
@@ -11,7 +12,7 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
       setForm(editingProduct);
       setImageFile(null);
     } else {
-      setForm({ name: '', price: '', description: '' });
+      setForm({ name: '', price: '', description: '', category: '' }); // Reset category
       setImageFile(null);
     }
   }, [editingProduct]);
@@ -30,20 +31,22 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (editingProduct) {
         await updateProduct(editingProduct._id, form, imageFile);
       } else {
         await createProduct(form, imageFile);
       }
-      setForm({ name: '', price: '', description: '' });
+      setForm({ name: '', price: '', description: '', category: '' }); // Clear form
       setImageFile(null);
       onClearEdit();
       alert(editingProduct ? 'Product updated successfully!' : 'Product added successfully!');
+      if (onProductSubmit) {
+        onProductSubmit(); // Trigger refresh after successful submission
+      }
     } catch (error) {
-      console.error('Error submitting product:', error);
-      alert('Failed to submit product. Please try again.');
+      console.error('Error submitting product:', error.response ? error.response.data : error.message);
+      alert(`Failed to submit product: ${error.response && error.response.data ? error.response.data.message : 'Please try again.'}`);
     }
   };
 
@@ -67,6 +70,15 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
           onChange={handleChange}
           required
         />
+        {/* Added Category input based on your backend model */}
+        <input
+          type="text"
+          name="category"
+          value={form.category}
+          placeholder="Category (e.g., Electronics, Clothing)"
+          onChange={handleChange}
+          required
+        />
         <textarea
           name="description"
           value={form.description}
@@ -80,7 +92,11 @@ const ProductForm = ({ editingProduct, onClearEdit }) => {
           onChange={handleImageChange}
         />
         <button type="submit">{editingProduct ? 'Update' : 'Add'} Product</button>
-        {editingProduct && <button type="button" onClick={onClearEdit} className="danger">Cancel Edit</button>}
+        {editingProduct && (
+          <button type="button" onClick={onClearEdit} className="danger">
+            Cancel Edit
+          </button>
+        )}
       </form>
     </div>
   );

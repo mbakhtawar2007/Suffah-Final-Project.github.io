@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { loginUser, registerUser } from '../services/api'; // ✅ Correct import
+import { login as loginUser, register as registerUser } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Load user from localStorage or sessionStorage
   useEffect(() => {
     const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (storedUser) {
@@ -19,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, rememberMe = false) => {
     try {
-      const res = await loginUser({ email, password }); // ✅ use named function
+      const res = await loginUser({ email, password });
       const { token, user: userData } = res.data;
 
       if (rememberMe) {
@@ -40,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const res = await registerUser({ name, email, password }); // ✅ use named function
+      const res = await registerUser({ name, email, password });
       const { token, user: userData } = res.data;
 
       localStorage.setItem('token', token);

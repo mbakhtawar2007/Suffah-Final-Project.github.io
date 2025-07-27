@@ -1,22 +1,52 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+// 🔗 Backend API base URL
+const API = axios.create({
+  baseURL: 'http://localhost:5000/api',
+  withCredentials: true,
+});
 
-const getToken = () => {
-  return localStorage.getItem('token'); // Or wherever you store your token
-};
-
-export const deleteProduct = async (productId) => {
-  try {
-    const token = getToken();
-    const response = await axios.delete(`${API_URL}/products/${productId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    throw error; // Re-throw the error for the component to handle
+// ✅ Include JWT token from localStorage or sessionStorage
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
+  return config;
+});
+
+/* ------------------- 🛍️ PRODUCT ROUTES ------------------- */
+export const fetchProducts = () => API.get('/products');
+
+export const createProduct = (productData, imageFile) => {
+  const formData = new FormData();
+  Object.entries(productData).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+  return API.post('/products', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 };
+
+export const updateProduct = (id, updatedData, imageFile) => {
+  const formData = new FormData();
+  Object.entries(updatedData).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+  return API.put(`/products/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+export const deleteProduct = (id) => API.delete(`/products/${id}`);
+
+/* ------------------- 🔐 AUTH ROUTES ------------------- */
+export const register = (userData) => API.post('/auth/register', userData);
+export const login = (credentials) => API.post('/auth/login', credentials);
+export const logout = () => API.post('/auth/logout');

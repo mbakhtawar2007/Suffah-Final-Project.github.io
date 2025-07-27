@@ -13,6 +13,7 @@ function LoginForm() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,9 +26,14 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return alert('Please fill in all fields.');
+      return setError('Please fill in all fields.');
     }
-    login(formData.email, formData.password, formData.rememberMe);
+
+    try {
+      await login(formData.email, formData.password, formData.rememberMe);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed.');
+    }
   };
 
   return (
@@ -72,6 +78,8 @@ function LoginForm() {
           />
           <label>Remember Me</label>
         </div>
+
+        {error && <p className="error-msg">{error}</p>}
 
         <button type="submit" className="submit-btn">
           Login

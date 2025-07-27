@@ -7,12 +7,13 @@ function RegisterForm() {
   const { register } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,11 +25,16 @@ function RegisterForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password } = formData;
-    if (!name || !email || !password) {
-      return alert('All fields are required.');
+    const { username, email, password } = formData;
+    if (!username || !email || !password) {
+      setError('All fields are required.');
+      return;
     }
-    register(name, email, password);
+    try {
+      await register(username, email, password);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed.');
+    }
   };
 
   return (
@@ -39,9 +45,9 @@ function RegisterForm() {
         <label>Name</label>
         <input
           type="text"
-          name="name"
+          name="username"
           placeholder="Your full name"
-          value={formData.name}
+          value={formData.username}
           onChange={handleChange}
           required
         />
@@ -73,6 +79,8 @@ function RegisterForm() {
             {showPassword ? '🙈' : '👁️'}
           </span>
         </div>
+
+        {error && <p className="error-msg">{error}</p>}
 
         <button type="submit" className="submit-btn">
           Register
