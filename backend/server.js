@@ -10,27 +10,24 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ CORS: Allow specific origins for both local development and deployed frontend
-// IMPORTANT: Replace 'https://your-frontend-vercel-url.vercel.app' with the actual URL
-// where your frontend (the one that makes requests to this backend) is deployed on Vercel.
-// Based on your error, it seems your frontend might also be deployed to 'https://suffah-final-project-github-io.vercel.app'.
+// ✅ CORS: Allow specific origins for local development and Netlify deployments
 app.use(cors({
   origin: [
-    /^http:\/\/localhost:\d+$/, // Allows any localhost port for development
-    'https://suffah-final-project-github-io.vercel.app' // Add your frontend's Vercel URL here
-    // If your frontend is deployed to a different Vercel URL, add that one instead.
-    // Example: 'https://your-actual-frontend-domain.vercel.app'
+    /^http:\/\/localhost:\d+$/, // For your local development (e.g., http://localhost:5173)
+    'https://shopease-adminpanel.netlify.app', // Your Admin Panel Netlify URL
+    'https://shopease-client-side.netlify.app'  // Your Client Side Netlify URL
   ],
   credentials: true,
 }));
 
+// The rest of your server.js remains the same:
 // ✅ Middleware
 app.use(express.json());
 
 // ✅ Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// ✅ Serve static files (if your backend also serves a static frontend, which might not be the case here)
+// ✅ Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ API Routes
@@ -46,22 +43,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
 
-    // ✅ Safely List Routes
-    try {
-      const routes = app._router.stack
-        .filter(layer => layer.route && layer.route.path)
-        .map(layer => {
-          const method = Object.keys(layer.route.methods).join(',').toUpperCase();
-          const routePath = layer.route.path;
-          return `${method} ${routePath}`;
-        });
-
-      console.log('📚 Registered routes:\n' + routes.join('\n'));
-    } catch (err) {
-      console.warn('⚠️ Could not list routes safely:', err.message || err);
-    }
-
-    // ✅ Start the server
+    // ... (rest of your connection and server start logic)
     app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
