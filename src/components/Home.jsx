@@ -82,7 +82,7 @@ function Home() {
         <div className="hero-content">
           <h1 id="hero-heading" className="animated-heading">Welcome to ShopEase</h1>
           <p className="animated-subheading">
-            Your one-stop destination for exclusive deals, trending products, and seamless shopping.
+            Your one-stop destination for exclusive deals, trending products, and seamless shopping experiences.
           </p>
           <div className="search-bar-container">
             <input
