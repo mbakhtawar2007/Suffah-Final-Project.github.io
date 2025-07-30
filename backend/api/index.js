@@ -1,52 +1,53 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config();
+import axios from 'axios';
 
-const productRoutes = require('../routes/productRoutes'); // Path adjusted for index.js
-const authRoutes = require('../routes/authRoutes');     // Path adjusted for index.js
+// 🔗 Dynamic Backend API base URL
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+});
 
-const app = express();
+// ✅ Include JWT token from localStorage or sessionStorage
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+});
 
-// ✅ CORS for frontend access
-app.use(cors({
-  origin: [
-    /^http:\/\/localhost:\d+$/, // For your local development (e.g., http://localhost:5173)
-    'https://shopease-adminpanel.netlify.app', // Your Admin Panel Netlify URL
-    'https://shopease-client-side.netlify.app',  // Your Client Side Netlify URL
-    'https://suffah-final-project-github-io.vercel.app' // Add your main frontend Vercel URL
-  ],
-  credentials: true,
-}));
-
-// ✅ Middleware
-app.use(express.json());
-
-// ✅ Static files (optional, based on need)
-// Paths need to be relative to where the Vercel build runs the file, which is usually the root of the backend folder.
-// If 'public/uploads' is inside 'backend/', the path should be correct as '../public/uploads' relative to 'backend/api/'.
-app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
-app.use(express.static(path.join(__dirname, '../public'))); // If you have other static assets in backend/public
-
-// ✅ API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-
-// ✅ Test route
-app.get('/', (req, res) => res.send('✅ API is working on Vercel!'));
-
-// ✅ MongoDB connect (connect only once per cold start)
-let isConnected = false;
-async function connectToDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGO_URI);
-  isConnected = true;
-  console.log('✅ MongoDB connected');
-}
-
-// ✅ Vercel handler export
-module.exports = async (req, res) => {
-  await connectToDB();
-  return app(req, res); // Pass request/response to Express
+/* ------------------- 🛍️ PRODUCT ROUTES ------------------- */
+// These routes need to have '/api' prepended to them
+export const fetchProducts = () => API.get('/api/products'); // MODIFIED
+export const createProduct = (productData, imageFile) => {
+  const formData = new FormData();
+  Object.entries(productData).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+  return API.post('/api/products', formData, { // MODIFIED
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 };
+
+export const updateProduct = (id, updatedData, imageFile) => {
+  const formData = new FormData();
+  Object.entries(updatedData).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+  return API.put(`/api/products/${id}`, formData, { // MODIFIED
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+export const deleteProduct = (id) => API.delete(`/api/products/${id}`); // MODIFIED
+
+/* ------------------- 🔐 AUTH ROUTES ------------------- */
+// These routes also need to have '/api' prepended to them
+export const register = (userData) => API.post('/api/auth/register', userData); // MODIFIED
+export const login = (credentials) => API.post('/api/auth/login', credentials); // MODIFIED
+export const logout = () => API.post('/api/auth/logout'); // MODIFIED

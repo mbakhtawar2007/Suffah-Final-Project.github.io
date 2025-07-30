@@ -3,9 +3,10 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const Product = require('../models/Product');
-const authenticateToken = require('../middleware/authMiddleware');
+// Import both authenticateToken and authorizeRoles from the middleware
+const { authenticateToken, authorizeRoles } = require('../middleware/authMiddleware');
 
-// File upload config
+// File upload config (no change needed here)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../public/uploads'));
@@ -17,7 +18,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// 📦 GET all products (public)
+// 📦 GET all products (public or authenticated, depending on your app's needs)
+// If you want products to be viewable by anyone (public):
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
@@ -26,8 +28,12 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+// OR, if you want products to be viewable only by *any* authenticated user (regular or admin):
+// router.get('/', authenticateToken, async (req, res) => { /* ... */ });
 
-// 🔍 GET product by ID (public)
+
+// 🔍 GET product by ID (public or authenticated)
+// If you want a single product to be viewable by anyone (public):
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -37,9 +43,12 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+// OR, if you want a single product to be viewable only by *any* authenticated user:
+// router.get('/:id', authenticateToken, async (req, res) => { /* ... */ });
 
-// ➕ POST create product (protected)
-router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
+
+// ➕ POST create product (protected - only 'admin' role)
+router.post('/', authenticateToken, authorizeRoles('admin'), upload.single('image'), async (req, res) => {
   try {
     const { name, price, description, category } = req.body;
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
@@ -59,8 +68,8 @@ router.post('/', authenticateToken, upload.single('image'), async (req, res) => 
   }
 });
 
-// ✏️ PUT update product (protected)
-router.put('/:id', authenticateToken, upload.single('image'), async (req, res) => {
+// ✏️ PUT update product (protected - only 'admin' role)
+router.put('/:id', authenticateToken, authorizeRoles('admin'), upload.single('image'), async (req, res) => {
   try {
     const { name, price, description, category } = req.body;
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
@@ -85,8 +94,8 @@ router.put('/:id', authenticateToken, upload.single('image'), async (req, res) =
   }
 });
 
-// 🗑️ DELETE product (protected)
-router.delete('/:id', authenticateToken, async (req, res) => {
+// 🗑️ DELETE product (protected - only 'admin' role)
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
     if (!deletedProduct) return res.status(404).json({ message: 'Product not found' });
