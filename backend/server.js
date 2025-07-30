@@ -8,29 +8,29 @@ const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // Ensure PORT is correctly picked up or defaults to 5000
 
-// ✅ CORS: Allow specific origins for local development and Netlify deployments
+// ✅ CORS: Allow specific origins for local development and deployed frontends
 app.use(cors({
   origin: [
-    /^http:\/\/localhost:\d+$/, // For your local development (e.g., http://localhost:5173)
-    'https://shopease-adminpanel.netlify.app', // Your Admin Panel Netlify URL
-    'https://shopease-client-side.netlify.app'  // Your Client Side Netlify URL
+    /^http:\/\/localhost:\d+$/, // For your local development (e.g., http://localhost:5173, 5174 etc.)
+    'https://shopease-adminpanel.netlify.app',
+    'https://shopease-client-side.netlify.app',
+    'https://suffah-final-project-github-io.vercel.app' // Add your main frontend Vercel URL
   ],
   credentials: true,
 }));
 
-// The rest of your server.js remains the same:
 // ✅ Middleware
 app.use(express.json());
 
 // ✅ Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// ✅ Serve static files
+// ✅ Serve static files (if you have any other public files at root)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ API Routes
+// ✅ API Routes - These prefixes are correct relative to the Express app's root
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
@@ -38,14 +38,13 @@ app.use('/api/products', productRoutes);
 app.get('/', (req, res) => res.send('✅ API is working!'));
 app.get('/api/test', (req, res) => res.json({ message: 'Test route is working 🚀' }));
 
-// ✅ MongoDB Connection
+// ✅ MongoDB Connection and Server Listen (for local execution)
+// THIS PART MUST BE UNCOMMENTED FOR YOUR LOCAL BACKEND TO WORK
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-
-    // ... (rest of your connection and server start logic)
     app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+      console.log(`🚀 Server running at http://localhost:${PORT}`); // This message will now appear!
     });
   })
   .catch((error) => {

@@ -16,7 +16,7 @@
       }
     }
   ],
-  "routes": [
+"routes": [
     {
       "src": "/(.*)",
       "dest": "backend/server.js"

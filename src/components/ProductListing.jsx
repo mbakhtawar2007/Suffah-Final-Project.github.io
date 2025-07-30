@@ -3,7 +3,9 @@ import '../styles/ProductListing.css';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+// Corrected: Get the base URL directly from environment variables.
+// Ensure VITE_API_BASE_URL is set correctly in .env.local and Vercel project settings.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'; // Add a fallback for local dev
 
 function ProductListing() {
   const [products, setProducts] = useState([]);
@@ -20,6 +22,8 @@ function ProductListing() {
     async function fetchProducts() {
       try {
         setLoading(true);
+        // Corrected: Use API_BASE_URL and then append the specific API path.
+        // Assuming your backend serves products at /api/products relative to its root.
         const response = await fetch(`${API_BASE_URL}/api/products`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
