@@ -4,18 +4,20 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const connectDB = require('./utils/db');
+// The utils/db module is no longer needed since you deleted the folder.
+// const connectDB = require('./utils/db'); 
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
+// The connectDB() function call is also no longer needed.
 // 1️⃣ Connect to MongoDB (memoized)
-connectDB().catch(err => {
-  // If DB connection fails, we let Vercel crash the function and log the error
-  console.error('Fatal DB error, exiting:', err);
-  process.exit(1);
-});
+// connectDB().catch(err => {
+//   // If DB connection fails, we let Vercel crash the function and log the error
+//   console.error('Fatal DB error, exiting:', err);
+//   process.exit(1);
+// });
 
 // 2️⃣ CORS
 app.use(cors({
@@ -23,9 +25,7 @@ app.use(cors({
     /^http:\/\/localhost:\d+$/,
     'https://shopease-adminpanel.netlify.app',
     'https://shopease-client-side.netlify.app',
-    // ADD THIS URL
-    'https://suffah-final-project-github-io.vercel.app', 
-    'https://suffah-final-project-github-io-muhammad-bakhtawars-projects.vercel.app' 
+    'https://suffah-final-project-github-io.vercel.app'
   ],
   credentials: true,
 }));
