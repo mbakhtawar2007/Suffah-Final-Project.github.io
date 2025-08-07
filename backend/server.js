@@ -18,13 +18,14 @@ connectDB().catch(err => {
 });
 
 // 2️⃣ CORS
-// server.js
 app.use(cors({
   origin: [
     /^http:\/\/localhost:\d+$/,
     'https://shopease-adminpanel.netlify.app',
     'https://shopease-client-side.netlify.app',
-    'https://suffah-final-project-github-io.vercel.app'
+    // ADD THIS URL
+    'https://suffah-final-project-github-io.vercel.app', 
+    'https://suffah-final-project-github-io-muhammad-bakhtawars-projects.vercel.app' 
   ],
   credentials: true,
 }));
