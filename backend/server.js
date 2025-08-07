@@ -18,6 +18,7 @@ connectDB().catch(err => {
 });
 
 // 2️⃣ CORS
+// server.js
 app.use(cors({
   origin: [
     /^http:\/\/localhost:\d+$/,
