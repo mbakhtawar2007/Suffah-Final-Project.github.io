@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const connectDB = require('./utils/db');
 const productRoutes = require('./routes/productRoutes');
-const authRoutes    = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.use(cors({
     /^http:\/\/localhost:\d+$/,
     'https://shopease-adminpanel.netlify.app',
     'https://shopease-client-side.netlify.app',
-    'https://shopease-client-side.netlify.app/products',
-    'https://suffah-final-project-github-io.vercel.app'
+    // 'https://shopease-client-side.netlify.app/products',
+    'https://suffah-final-project-github-io.vercel.app',
   ],
   credentials: true,
 }));
@@ -42,8 +42,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
 // 6️⃣ Test routes
-app.get('/',       (req, res) => res.send('✅ API is working!'));
-app.get('/api/test',(req, res) => res.json({ message: 'Test route is working 🚀' }));
+app.get('/', (req, res) => res.send('✅ API is working!'));
+app.get('/api/test', (req, res) => res.json({ message: 'Test route is working 🚀' }));
 
 // 7️⃣ Global error handler (so uncaught errors get logged nicely)
 app.use((err, req, res, next) => {
