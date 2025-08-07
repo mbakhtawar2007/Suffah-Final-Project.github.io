@@ -24,8 +24,7 @@ app.use(cors({
     /^http:\/\/localhost:\d+$/,
     'https://shopease-adminpanel.netlify.app',
     'https://shopease-client-side.netlify.app',
-    // 'https://shopease-client-side.netlify.app/products',
-    'https://suffah-final-project-github-io.vercel.app',
+    'https://suffah-final-project-github-io.vercel.app'
   ],
   credentials: true,
 }));
