@@ -1,4 +1,6 @@
+import React from 'react';
 import { useCart } from '../context/CartContext';
+import { announce } from '../utils/announce';
 import '../styles/ProductCard.css';
 
 function ProductCard({ product }) {
@@ -6,11 +8,7 @@ function ProductCard({ product }) {
 
   const handleAddToCart = () => {
     addToCart(product);
-
-    const liveRegion = document.getElementById('live-region');
-    if (liveRegion) {
-      liveRegion.textContent = `${product.name} has been added to your cart.`;
-    }
+    announce(`${product.name} has been added to your cart.`);
   };
 
   return (
@@ -30,20 +28,9 @@ function ProductCard({ product }) {
         Add to Cart
       </button>
 
-      {/* Screen reader live region */}
-      <div
-        id="live-region"
-        aria-live="polite"
-        style={{
-          position: 'absolute',
-          left: '-9999px',
-          width: '1px',
-          height: '1px',
-          overflow: 'hidden'
-        }}
-      />
+      {/* Announcements are handled by the global announcer (src/utils/announce.js) */}
     </div>
   );
 }
 
-export default ProductCard;
+export default React.memo(ProductCard);

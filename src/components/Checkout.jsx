@@ -31,7 +31,6 @@ function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitting order with:', { shippingAddress, paymentMethod });
     setFormError('');
     setSuccess(true);
     setShippingAddress('');

@@ -8,7 +8,6 @@ function UserProfile({ user: { name, email, avatar } }) {
 
   const handleSave = (updatedUser) => {
     // Update user profile in app state or backend
-    console.log('Updated User:', updatedUser);
     setModalOpen(false);
   };
 

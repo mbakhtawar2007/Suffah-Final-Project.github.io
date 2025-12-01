@@ -3,61 +3,86 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-// The utils/db module is no longer needed since you deleted the folder.
-// const connectDB = require('./utils/db'); 
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// The connectDB() function call is also no longer needed.
-// 1️⃣ Connect to MongoDB (memoized)
-// connectDB().catch(err => {
-//   // If DB connection fails, we let Vercel crash the function and log the error
-//   console.error('Fatal DB error, exiting:', err);
-//   process.exit(1);
-// });
+/* -------------------------------------------
+   1️⃣ MONGO CONNECTION
+-------------------------------------------- */
+const MONGO_URI = process.env.MONGO_URI;
 
-// 2️⃣ CORS
-app.use(cors({
-  origin: [
-    /^http:\/\/localhost:\d+$/,
-    'https://shopease-adminpanel.netlify.app',
-    'https://shopease-client-side.netlify.app',
-    'https://suffah-final-project-github-io.vercel.app'
-  ],
-  credentials: true,
-}));
+if (!MONGO_URI) {
+  console.warn("⚠️ Warning: MONGO_URI is missing in .env file.");
+} else {
+  mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("✅ Connected to MongoDB"))
+    .catch((err) => console.error("🔴 MongoDB Error:", err.message));
+}
 
-// 3️⃣ Middleware
+/* -------------------------------------------
+   2️⃣ CORS CONFIG
+-------------------------------------------- */
+app.use(
+  cors({
+    origin: [
+         "http://localhost:5173",
+         "http://localhost:5174",
+      "http://localhost:3000",
+      "http://localhost:5000",
+      "https://shopease-adminpanel.netlify.app",
+      "https://shopease-client-side.netlify.app",
+      "https://suffah-final-project-github-io.vercel.app",
+    ],
+    credentials: true,
+  })
+);
+
+/* -------------------------------------------
+   3️⃣ MIDDLEWARE
+-------------------------------------------- */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// 4️⃣ Static serving
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
-app.use(express.static(path.join(__dirname, 'public')));
+/* -------------------------------------------
+   4️⃣ STATIC FILES
+-------------------------------------------- */
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use(express.static(path.join(__dirname, "public")));
 
-// 5️⃣ API routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
+/* -------------------------------------------
+   5️⃣ API ROUTES
+-------------------------------------------- */
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
-// 6️⃣ Test routes
-app.get('/', (req, res) => res.send('✅ API is working!'));
-app.get('/api/test', (req, res) => res.json({ message: 'Test route is working 🚀' }));
+/* -------------------------------------------
+   6️⃣ TEST ROUTES
+-------------------------------------------- */
+app.get("/", (req, res) => res.send("✅ API is running successfully"));
+app.get("/api/test", (req, res) => res.json({ success: true }));
 
-// 7️⃣ Global error handler (so uncaught errors get logged nicely)
+/* -------------------------------------------
+   7️⃣ GLOBAL ERROR HANDLER
+-------------------------------------------- */
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
-  res.status(500).json({ error: 'Internal Server Error' });
+  console.error("🔥 Unhandled Error:", err);
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
-// 8️⃣ Export for Vercel
+/* -------------------------------------------
+   8️⃣ EXPORT FOR VERCEL
+-------------------------------------------- */
 module.exports = app;
 
-// 9️⃣ Add this block for local development
-const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-  });
+/* -------------------------------------------
+   9️⃣ LOCAL DEV SERVER
+-------------------------------------------- */
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 }

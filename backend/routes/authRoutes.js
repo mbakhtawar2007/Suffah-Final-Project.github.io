@@ -1,13 +1,14 @@
 // backend/routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
-// Import the controller functions
+
 const authController = require('../controllers/authController');
+const { registerValidator, loginValidator } = require('../middleware/validators');
 
-// Register new user
-router.post('/register', authController.register);
+// Register route
+router.post('/register', registerValidator, authController.register);
 
-// Login user and return JWT token
-router.post('/login', authController.login);
+// Login route — accepts email OR username
+router.post('/login', loginValidator, authController.login);
 
 module.exports = router;
